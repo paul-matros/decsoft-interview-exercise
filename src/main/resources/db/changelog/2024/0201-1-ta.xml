@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="0201-1" author="ta">
+
+        <createTable tableName="author">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar(256)"/>
+            <column name="bio" type="text"/>
+            <column name="email" type="varchar(256)"/>
+        </createTable>
+
+        <createTable tableName="book">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="isbn" type="varchar(13)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="book_isbn_unique"/>
+            </column>
+            <column name="published_date" type="date"/>
+            <column name="description" type="text"/>
+            <column name="author_id" type="bigint">
+                <constraints nullable="false" referencedTableName="author" referencedColumnNames="id" foreignKeyName="fk_book_author"/>
+            </column>
+            <column name="price" type="numeric(8,2)"/>
+        </createTable>
+
+        <createTable tableName="customer">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="book_order">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="bigint">
+                <constraints nullable="false" referencedTableName="customer" referencedColumnNames="id" foreignKeyName="fk_order_customer"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="order_item">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_id" type="bigint">
+                <constraints nullable="false" referencedTableName="book_order" referencedColumnNames="id" foreignKeyName="fk_order_item_book_order"/>
+            </column>
+            <column name="book_id" type="bigint">
+                <constraints nullable="false" referencedTableName="book" referencedColumnNames="id" foreignKeyName="fk_order_items_book"/>
+            </column>
+            <column name="quantity" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="contact_form">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValue="now()">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subject" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="bigint">
+                <constraints nullable="false" referencedTableName="author" referencedColumnNames="id" foreignKeyName="fk_contact_form_author"/>
+            </column>
+        </createTable>
+
+        <createView viewName="book_order_report">
+            SELECT b.isbn, b.title, b.published_date as order_date, oi.quantity
+            FROM book_order o
+                     JOIN order_item oi ON o.id = oi.order_id
+                     JOIN book b ON oi.book_id = b.id;
+        </createView>
+
+    </changeSet>
+
+    <changeSet id="0201-2" author="ta">
+        <sql>
+            INSERT INTO author (first_name, last_name, bio) VALUES
+                ('J.R.R.', 'Tolkien', 'John Ronald Reuel Tolkien was an English writer, poet, philologist, and academic.'),
+                ('George', 'Orwell', 'George Orwell was an English novelist, essayist, journalist, and critic.'),
+                ('Jane', 'Austen', 'Jane Austen was an English novelist known primarily for her six major novels.'),
+                ('Mark', 'Twain', 'Samuel Langhorne Clemens, known by his pen name Mark Twain, was an American writer.'),
+                ('F. Scott', 'Fitzgerald', 'Francis Scott Key Fitzgerald was an American novelist, essayist, screenwriter, and short-story writer.'),
+                ('Harper', 'Lee', 'Nelle Harper Lee was an American novelist best known for her 1960 novel To Kill a Mockingbird.'),
+                ('J.K.', 'Rowling', 'Joanne Rowling, writing under the pen names J.K. Rowling and Robert Galbraith, is a British author.'),
+                ('Leo', 'Tolstoy', 'Leo Tolstoy was a Russian writer who is regarded as one of the greatest authors of all time.'),
+                ('Charles', 'Dickens', 'Charles Dickens was an English writer and social critic.'),
+                ('Ernest', 'Hemingway', 'Ernest Hemingway was an American novelist, short-story writer, and journalist.'),
+                ('Homer', '', 'Homer is the legendary author of the Iliad and the Odyssey, two epic poems that are the central works of ancient Greek literature.'),
+                ('Herman', 'Melville', 'Herman Melville was an American novelist, short story writer, and poet of the American Renaissance period.'),
+                ('James', 'Joyce', 'James Joyce was an Irish novelist, short story writer, poet, teacher, and literary critic.'),
+                ('Gabriel Garcia', 'Marquez', 'Gabriel Garcia Marquez was a Colombian novelist, short-story writer, screenwriter, and journalist.'),
+                ('Virginia', 'Woolf', 'Virginia Woolf was an English writer, considered one of the most important modernist 20th-century authors.'),
+                ('Fyodor', 'Dostoevsky', 'Fyodor Dostoevsky was a Russian novelist, short story writer, essayist, journalist, and philosopher.'),
+                ('Marcel', 'Proust', 'Valentin Louis Georges Eugène Marcel Proust was a French novelist, critic, and essayist.'),
+                ('William', 'Shakespeare', 'William Shakespeare was an English playwright, poet, and actor.'),
+                ('Miguel de', 'Cervantes', 'Miguel de Cervantes Saavedra was a Spanish writer regarded as the greatest writer in the Spanish language.'),
+                ('H.G.', 'Wells', 'Herbert George Wells was an English writer. He was prolific in many genres.');
+
+            INSERT INTO book (title, isbn, published_date, description, author_id, price) VALUES
+                ('The Lord of the Rings', '9780618640157', '1954-07-29', 'An epic high-fantasy novel written by J.R.R. Tolkien.', (SELECT id FROM author WHERE first_name = 'J.R.R.' AND last_name = 'Tolkien'), 29.99),
+                ('1984', '9780451524935', '1949-06-08', 'A dystopian social science fiction novel and cautionary tale, written by the English writer George Orwell.', (SELECT id FROM author WHERE first_name = 'George' AND last_name = 'Orwell'), 9.99),
+                ('Pride and Prejudice', '9781503290563', '1813-01-28', 'A romantic novel of manners written by Jane Austen.', (SELECT id FROM author WHERE first_name = 'Jane' AND last_name = 'Austen'), 14.99),
+                ('Adventures of Huckleberry Finn', '9780486280615', '1884-12-10', 'A novel by Mark Twain, first published in the United Kingdom.', (SELECT id FROM author WHERE first_name = 'Mark' AND last_name = 'Twain'), 11.99),
+                ('The Great Gatsby', '9780743273565', '1925-04-10', 'A 1925 novel written by American author F. Scott Fitzgerald.', (SELECT id FROM author WHERE first_name = 'F. Scott' AND last_name = 'Fitzgerald'), 10.99),
+                ('To Kill a Mockingbird', '9780060935467', '1960-07-11', 'A novel by Harper Lee published in 1960.', (SELECT id FROM author WHERE first_name = 'Harper' AND last_name = 'Lee'), 7.99),
+                ('Harry Potter and the Sorcerer||'''||'s Stone', '9780590353427', '1997-06-26', 'A fantasy novel written by British author J.K. Rowling.', (SELECT id FROM author WHERE first_name = 'J.K.' AND last_name = 'Rowling'), 24.99),
+                ('War and Peace', '9781400079988', '1869-01-01', 'A novel by the Russian author Leo Tolstoy, published from 1865 to 1869.', (SELECT id FROM author WHERE first_name = 'Leo' AND last_name = 'Tolstoy'), 19.99),
+                ('A Tale of Two Cities', '9780486406510', '1859-04-30', 'A historical novel by Charles Dickens.', (SELECT id FROM author WHERE first_name = 'Charles' AND last_name = 'Dickens'), 12.99),
+                ('The Old Man and the Sea', '9780684830490', '1952-09-01', 'A short novel written by the American author Ernest Hemingway.', (SELECT id FROM author WHERE first_name = 'Ernest' AND last_name = 'Hemingway'), 13.99),
+                ('The Iliad', '9780140275360', '762-01-01', 'An ancient Greek epic poem attributed to Homer.', (SELECT id FROM author WHERE first_name = 'Homer' AND last_name = ''), 17.99),
+                ('Moby-Dick', '9781503280786', '1851-10-18', 'A novel written by American author Herman Melville.', (SELECT id FROM author WHERE first_name = 'Herman' AND last_name = 'Melville'), 18.99),
+                ('Ulysses', '9781840226355', '1922-02-02', 'A modernist novel by Irish writer James Joyce.', (SELECT id FROM author WHERE first_name = 'James' AND last_name = 'Joyce'), 16.99),
+                ('One Hundred Years of Solitude', '9780060883287', '1967-05-30', 'A landmark 1967 novel by Colombian author Gabriel Garcia Marquez.', (SELECT id FROM author WHERE first_name = 'Gabriel Garcia' AND last_name = 'Marquez'), 14.99),
+                ('Mrs Dalloway', '9780156628709', '1925-05-14', 'A novel by Virginia Woolf that details a day in the life of Clarissa Dalloway.', (SELECT id FROM author WHERE first_name = 'Virginia' AND last_name = 'Woolf'), 9.99),
+                ('Crime and Punishment', '9780486415871', '1866-01-01', 'A novel by the Russian author Fyodor Dostoevsky.', (SELECT id FROM author WHERE first_name = 'Fyodor' AND last_name = 'Dostoevsky'), 15.99),
+                ('In Search of Lost Time', '9780142437964', '1913-11-01', 'A novel by Marcel Proust, published in seven volumes.', (SELECT id FROM author WHERE first_name = 'Marcel' AND last_name = 'Proust'), 22.99),
+                ('Hamlet', '9780486272788', '1603-01-01', 'A tragedy written by William Shakespeare.', (SELECT id FROM author WHERE first_name = 'William' AND last_name = 'Shakespeare'), 6.99),
+                ('Don Quixote', '9780060934347', '1605-01-16', 'A Spanish novel by Miguel de Cervantes.', (SELECT id FROM author WHERE first_name = 'Miguel de' AND last_name = 'Cervantes'), 19.99),
+                ('The Time Machine', '9780553213515', '1895-05-07', 'A science fiction novella by H.G. Wells.', (SELECT id FROM author WHERE first_name = 'H.G.' AND last_name = 'Wells'), 8.99);
+
+            INSERT INTO customer (name, email) VALUES
+                ('John Doe', 'john.doe@example.com'),
+                ('Jane Smith', 'jane.smith@example.com'),
+                ('Alice Johnson', 'alice.johnson@example.com'),
+                ('Bob Brown', 'bob.brown@example.com'),
+                ('Charlie Davis', 'charlie.davis@example.com'),
+                ('Eve White', 'eve.white@example.com'),
+                ('Frank Black', 'frank.black@example.com'),
+                ('Grace Green', 'grace.green@example.com'),
+                ('Hank Blue', 'hank.blue@example.com'),
+                ('Ivy Orange', 'ivy.orange@example.com');
+
+            INSERT INTO book_order (order_date, customer_id) VALUES
+                ('2024-06-10 10:00:00', (SELECT id FROM customer WHERE name = 'John Doe')),
+                ('2024-06-11 11:00:00', (SELECT id FROM customer WHERE name = 'John Doe')),
+                ('2024-06-10 12:00:00', (SELECT id FROM customer WHERE name = 'Jane Smith')),
+                ('2024-06-11 13:00:00', (SELECT id FROM customer WHERE name = 'Alice Johnson')),
+                ('2024-06-10 14:00:00', (SELECT id FROM customer WHERE name = 'Bob Brown')),
+                ('2024-06-11 15:00:00', (SELECT id FROM customer WHERE name = 'Charlie Davis')),
+                ('2024-06-10 16:00:00', (SELECT id FROM customer WHERE name = 'Eve White')),
+                ('2024-06-11 17:00:00', (SELECT id FROM customer WHERE name = 'Frank Black')),
+                ('2024-06-10 18:00:00', (SELECT id FROM customer WHERE name = 'Grace Green')),
+                ('2024-06-11 19:00:00', (SELECT id FROM customer WHERE name = 'Hank Blue'));
+
+            INSERT INTO order_item (order_id, book_id, quantity) VALUES
+                ((SELECT id FROM book_order WHERE customer_id = (SELECT id FROM customer WHERE name = 'John Doe') ORDER BY order_date LIMIT 1), (SELECT id FROM book WHERE isbn = '9780743273565'), 1),
+                ((SELECT id FROM book_order WHERE customer_id = (SELECT id FROM customer WHERE name = 'John Doe') ORDER BY order_date DESC LIMIT 1), (SELECT id FROM book WHERE isbn = '9780451524935'), 2),
+                ((SELECT id FROM book_order WHERE customer_id = (SELECT id FROM customer WHERE name = 'Jane Smith') ORDER BY order_date LIMIT 1), (SELECT id FROM book WHERE isbn = '9781503290563'), 1),
+                ((SELECT id FROM book_order WHERE customer_id = (SELECT id FROM customer WHERE name = 'Alice Johnson') ORDER BY order_date LIMIT 1), (SELECT id FROM book WHERE isbn = '9780590353427'), 1),
+                ((SELECT id FROM book_order WHERE customer_id = (SELECT id FROM customer WHERE name = 'Bob Brown') ORDER BY order_date LIMIT 1), (SELECT id FROM book WHERE isbn = '9781400079988'), 1),
+                ((SELECT id FROM book_order WHERE customer_id = (SELECT id FROM customer WHERE name = 'Charlie Davis') ORDER BY order_date LIMIT 1), (SELECT id FROM book WHERE isbn = '9781503280786'), 1),
+                ((SELECT id FROM book_order WHERE customer_id = (SELECT id FROM customer WHERE name = 'Eve White') ORDER BY order_date LIMIT 1), (SELECT id FROM book WHERE isbn = '9780486415871'), 1),
+                ((SELECT id FROM book_order WHERE customer_id = (SELECT id FROM customer WHERE name = 'Frank Black') ORDER BY order_date LIMIT 1), (SELECT id FROM book WHERE isbn = '9780060883287'), 1),
+                ((SELECT id FROM book_order WHERE customer_id = (SELECT id FROM customer WHERE name = 'Grace Green') ORDER BY order_date LIMIT 1), (SELECT id FROM book WHERE isbn = '9780486272788'), 1),
+                ((SELECT id FROM book_order WHERE customer_id = (SELECT id FROM customer WHERE name = 'Hank Blue') ORDER BY order_date LIMIT 1), (SELECT id FROM book WHERE isbn = '9780060934347'), 1),
+                ((SELECT id FROM book_order WHERE customer_id = (SELECT id FROM customer WHERE name = 'Hank Blue') ORDER BY order_date DESC LIMIT 1), (SELECT id FROM book WHERE isbn = '9780553213515'), 1);
+        </sql>
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -28,4 +28,4 @@ One does not simply 'correct' app - do as you fell as long as it's usable for en
 - request6 - it contains some error (deliberately), but it doesn't say much - it would be nice to be able to read what is problem actually
 
 And maybe there are some more errors/bugs/code smells that were not found :)   
-#### Make project usable, zip it into single file and send us back.
+#### Make project usable, create a repository and share it with us.

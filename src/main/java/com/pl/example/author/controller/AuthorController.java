@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +29,6 @@ public class AuthorController {
     private final AuthorMapper authorMapper;
 
     @GetMapping
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public List<AuthorDTO> getAll() {
         return authorRepository.findAll().stream()
@@ -39,7 +37,6 @@ public class AuthorController {
     }
 
     @GetMapping(path = "/{id}")
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public AuthorDTO get(@PathVariable Long id) {
         return authorRepository.findById(id)
@@ -48,7 +45,6 @@ public class AuthorController {
     }
 
     @PostMapping(path = "/{id}")
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public AuthorDTO update(@PathVariable Long id, @Valid @RequestBody UpdateAuthorDTO updateAuthorDTO) {
         return authorRepository.findById(id).stream()
@@ -60,7 +56,6 @@ public class AuthorController {
     }
 
     @PostMapping(path = "/{id}/contact")
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     public ContactFormResponseDTO contact(@PathVariable Long id, @Valid @RequestBody ContactFormRequestDTO contactFormDTO) {
         var author = authorRepository.findById(id).orElseThrow();

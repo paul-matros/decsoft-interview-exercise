@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +38,6 @@ public class BookController {
     private final BookOrderMapper bookOrderMapper;
 
     @GetMapping
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public List<BookDTO> getAll() {
         return bookRepository.findAll().stream()
@@ -48,7 +46,6 @@ public class BookController {
     }
 
     @GetMapping(path = "/{id}")
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public BookDTO get(@PathVariable Long id) {
         return bookRepository.findById(id)
@@ -57,14 +54,12 @@ public class BookController {
     }
 
     @GetMapping(path = "/orders")
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)//todo move to separate controller
     public List<BookOrderReportItem> getOrdersBetweenDates(@RequestParam @NotNull LocalDate dateFrom, @RequestParam @NotNull LocalDate dateTo) {
         return bookOrderRepository.getBookOrdersByDate(dateFrom, dateTo);
     }
 
     @PostMapping(path = "/order")
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)//todo move to separate controller
     public BookOrderDTO createOrder(@Valid @NotNull @RequestBody CreateOrderDTO createOrderDTO) {
         var newOrder = bookOrderMapper.mapToOrder(createOrderDTO, bookRepository, customerRepository);

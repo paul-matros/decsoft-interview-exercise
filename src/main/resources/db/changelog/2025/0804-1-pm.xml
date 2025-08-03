@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="0804-1" author="pm">
+        <dropView viewName="book_order_report"/>
+
+        <!-- Recreate the view with correct order_date -->
+        <createView viewName="book_order_report">
+            SELECT ROW_NUMBER() OVER() as id,
+            b.isbn,
+            b.title,
+            DATE(o.order_date) as order_date,
+            oi.quantity
+            FROM book_order o
+            JOIN order_item oi ON o.id = oi.order_id
+            JOIN book b ON oi.book_id = b.id;
+        </createView>
+    </changeSet>
+
+</databaseChangeLog>

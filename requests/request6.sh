@@ -1,4 +1,4 @@
-curl -o - -X POST 'http://host.docker.internal:8080/api/books/order' \
+curl -o - -X POST 'http://host.docker.internal:8080/api/orders' \
 -u "user:example" \
 -H "Content-Type: application/json" \
 -d '{

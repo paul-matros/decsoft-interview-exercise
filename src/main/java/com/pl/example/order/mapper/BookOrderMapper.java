@@ -29,7 +29,7 @@ public interface BookOrderMapper {
     BookOrderItemDTO mapOrderItemToDTO(BookOrderItem orderItem);
 
     @AfterMapping
-    default void linkOrderItems(@MappingTarget BookOrder order, CreateOrderDTO createOrderDTO, Customer customer, Book book) {
+    default void linkOrderItems(@MappingTarget BookOrder order, CreateOrderDTO createOrderDTO, Book book) {
         BookOrderItem item = new BookOrderItem();
         item.setBook(book);
         item.setQuantity(createOrderDTO.getQuantity());

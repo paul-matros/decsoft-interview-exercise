@@ -2,10 +2,7 @@ package com.pl.example.book.controller;
 
 import com.pl.example.book.dto.BookDTO;
 import com.pl.example.book.mapper.BookMapper;
-import com.pl.example.book.repository.BookRepository;
-import com.pl.example.order.mapper.BookOrderMapper;
-import com.pl.example.order.repository.BookOrderRepository;
-import com.pl.example.order.repository.CustomerRepository;
+import com.pl.example.book.service.BookService;
 import com.pl.example.order.service.BookOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,17 +17,14 @@ import java.util.List;
 @Validated
 public class BookController {
 
-    private final BookRepository bookRepository;
-    private final CustomerRepository customerRepository;
+    private final BookService bookService;
     private final BookOrderService bookOrderService;
-    private final BookOrderRepository bookOrderRepository;
     private final BookMapper bookMapper;
-    private final BookOrderMapper bookOrderMapper;
 
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     public List<BookDTO> getAll() {
-        return bookRepository.findAll().stream()
+        return bookService.getAllBooks().stream()
                 .map(bookMapper::mapBookToDTO)
                 .toList();
     }
@@ -38,7 +32,7 @@ public class BookController {
     @GetMapping(path = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public BookDTO get(@PathVariable Long id) {
-        return bookRepository.findById(id)
+        return bookService.getBook(id)
                 .map(bookMapper::mapBookToDTO)
                 .orElse(null);
     }

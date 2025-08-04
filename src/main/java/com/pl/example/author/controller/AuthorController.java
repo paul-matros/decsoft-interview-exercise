@@ -8,8 +8,10 @@ import com.pl.example.author.mapper.AuthorMapper;
 import com.pl.example.author.model.ContactForm;
 import com.pl.example.author.service.AuthorService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/authors")
 @RequiredArgsConstructor
+@Validated
 public class AuthorController {
 
     private final AuthorService authorService;
@@ -40,7 +43,8 @@ public class AuthorController {
 
     @PatchMapping(path = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public AuthorDTO update(@PathVariable Long id, @Valid @RequestBody UpdateAuthorDTO updateAuthorDTO) {
+    public AuthorDTO update(@PathVariable @Positive Long id,
+                            @Valid @RequestBody UpdateAuthorDTO updateAuthorDTO) {
         return authorService.updateAuthor(id, updateAuthorDTO)
                 .map(authorMapper::mapAuthorToDTO)
                 .orElse(null);
@@ -48,7 +52,8 @@ public class AuthorController {
 
     @PostMapping(path = "/{id}/contact")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ContactFormResponseDTO contact(@PathVariable Long id, @Valid @RequestBody ContactFormRequestDTO contactFormDTO) {
+    public ContactFormResponseDTO contact(@PathVariable @Positive Long id,
+                                          @Valid @RequestBody ContactFormRequestDTO contactFormDTO) {
         ContactForm contactForm = authorService.createContactForm(id, contactFormDTO);
         return authorMapper.mapContactFormToDTO(contactForm);
     }

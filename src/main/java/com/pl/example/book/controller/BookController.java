@@ -4,6 +4,7 @@ import com.pl.example.book.dto.BookDTO;
 import com.pl.example.book.mapper.BookMapper;
 import com.pl.example.book.service.BookService;
 import com.pl.example.order.service.BookOrderService;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +32,7 @@ public class BookController {
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public BookDTO get(@PathVariable Long id) {
+    public BookDTO get(@PathVariable @Positive Long id) {
         return bookService.getBook(id)
                 .map(bookMapper::mapBookToDTO)
                 .orElse(null);

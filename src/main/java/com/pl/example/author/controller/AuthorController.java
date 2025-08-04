@@ -8,10 +8,11 @@ import com.pl.example.author.mapper.AuthorMapper;
 import com.pl.example.author.repository.AuthorRepository;
 import com.pl.example.author.repository.ContactFormRepository;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/authors")
@@ -26,27 +27,28 @@ public class AuthorController {
     @ResponseStatus(value = HttpStatus.OK)
     public List<AuthorDTO> getAll() {
         return authorRepository.findAll().stream()
-                .map(authorMapper::mapAuthorToDTO)
-                .toList();
+            .map(authorMapper::mapAuthorToDTO)
+            .toList();
     }
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public AuthorDTO get(@PathVariable Long id) {
         return authorRepository.findById(id)
-                .map(authorMapper::mapAuthorToDTO)
-                .orElse(null);
+            .map(authorMapper::mapAuthorToDTO)
+            .orElse(null);
     }
 
     @PatchMapping(path = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public AuthorDTO update(@PathVariable Long id, @Valid @RequestBody UpdateAuthorDTO updateAuthorDTO) {
-        return authorRepository.findById(id).stream()
-                .peek(author -> authorMapper.updateAuthor(author, updateAuthorDTO))
-                .map(authorRepository::save)
-                .map(authorMapper::mapAuthorToDTO)
-                .findFirst()
-                .orElse(null);
+        return authorRepository.findById(id)
+            .map(author -> {
+                authorMapper.updateAuthor(author, updateAuthorDTO);
+                return authorRepository.save(author);
+            })
+            .map(authorMapper::mapAuthorToDTO)
+            .orElse(null);
     }
 
     @PostMapping(path = "/{id}/contact")

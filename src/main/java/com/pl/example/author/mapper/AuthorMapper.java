@@ -5,13 +5,8 @@ import com.pl.example.author.dto.ContactFormRequestDTO;
 import com.pl.example.author.dto.ContactFormResponseDTO;
 import com.pl.example.author.dto.UpdateAuthorDTO;
 import com.pl.example.author.model.Author;
-import com.pl.example.author.repository.ContactForm;
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.ReportingPolicy;
+import com.pl.example.author.model.ContactForm;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,

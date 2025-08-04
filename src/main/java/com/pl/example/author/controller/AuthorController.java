@@ -5,7 +5,7 @@ import com.pl.example.author.dto.ContactFormRequestDTO;
 import com.pl.example.author.dto.ContactFormResponseDTO;
 import com.pl.example.author.dto.UpdateAuthorDTO;
 import com.pl.example.author.mapper.AuthorMapper;
-import com.pl.example.author.repository.ContactForm;
+import com.pl.example.author.model.ContactForm;
 import com.pl.example.author.service.AuthorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

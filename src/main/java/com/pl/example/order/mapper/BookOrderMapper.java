@@ -20,7 +20,6 @@ public interface BookOrderMapper {
     @Mapping(target = "customer", source = "customer")
     @Mapping(target = "orderDate", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "orderItems", ignore = true)
-        // We'll handle this in @AfterMapping
     BookOrder mapToOrder(CreateOrderDTO createOrderDTO, Customer customer, Book book);
 
     @Mapping(target = "customerId", source = "customer.id")

@@ -12,10 +12,6 @@ import org.mapstruct.ReportingPolicy;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface BookMapper {
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "title", source = "title")
-    @Mapping(target = "isbn", source = "isbn")
-    @Mapping(target = "publishedDate", source = "publishedDate")
     @Mapping(target = "author", expression = "java(book.getAuthor().getFirstName() + ' ' + book.getAuthor().getLastName())")
     BookDTO mapBookToDTO(Book book);
 }

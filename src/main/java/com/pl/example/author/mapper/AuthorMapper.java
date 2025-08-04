@@ -1,11 +1,8 @@
 package com.pl.example.author.mapper;
 
 import com.pl.example.author.dto.AuthorDTO;
-import com.pl.example.author.dto.ContactFormRequestDTO;
-import com.pl.example.author.dto.ContactFormResponseDTO;
 import com.pl.example.author.dto.UpdateAuthorDTO;
 import com.pl.example.author.model.Author;
-import com.pl.example.author.model.ContactForm;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
@@ -15,11 +12,6 @@ import org.mapstruct.*;
 public interface AuthorMapper {
 
     AuthorDTO mapAuthorToDTO(Author author);
-
-    ContactForm mapContactFormDTO(ContactFormRequestDTO contactForm, Author author);
-
-    @Mapping(target = "author", expression = "java(contactForm.getAuthor().getFirstName() + ' ' + contactForm.getAuthor().getLastName())")
-    ContactFormResponseDTO mapContactFormToDTO(ContactForm contactForm);
 
     void updateAuthor(@MappingTarget Author author, UpdateAuthorDTO updateAuthorDTO);
 }

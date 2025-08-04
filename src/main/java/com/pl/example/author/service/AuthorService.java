@@ -3,6 +3,7 @@ package com.pl.example.author.service;
 import com.pl.example.author.dto.ContactFormRequestDTO;
 import com.pl.example.author.dto.UpdateAuthorDTO;
 import com.pl.example.author.mapper.AuthorMapper;
+import com.pl.example.author.mapper.ContactFormMapper;
 import com.pl.example.author.model.Author;
 import com.pl.example.author.model.ContactForm;
 import com.pl.example.author.repository.AuthorRepository;
@@ -20,6 +21,7 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
     private final ContactFormRepository contactFormRepository;
+    private final ContactFormMapper contactFormMapper;
 
     public List<Author> getAllAuthors() {
         return authorRepository.findAll();
@@ -40,7 +42,7 @@ public class AuthorService {
     public ContactForm createContactForm(Long authorId, ContactFormRequestDTO contactFormDTO) {
         Author author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new RuntimeException("Author not found with id: " + authorId));//todo add custom exception?
-        ContactForm contactForm = authorMapper.mapContactFormDTO(contactFormDTO, author);
+        ContactForm contactForm = contactFormMapper.mapContactFormDTO(contactFormDTO, author);
         return contactFormRepository.save(contactForm);
     }
 }

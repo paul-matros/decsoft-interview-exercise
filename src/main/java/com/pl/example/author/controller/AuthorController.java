@@ -5,6 +5,7 @@ import com.pl.example.author.dto.ContactFormRequestDTO;
 import com.pl.example.author.dto.ContactFormResponseDTO;
 import com.pl.example.author.dto.UpdateAuthorDTO;
 import com.pl.example.author.mapper.AuthorMapper;
+import com.pl.example.author.mapper.ContactFormMapper;
 import com.pl.example.author.model.ContactForm;
 import com.pl.example.author.service.AuthorService;
 import jakarta.validation.Valid;
@@ -24,6 +25,7 @@ public class AuthorController {
 
     private final AuthorService authorService;
     private final AuthorMapper authorMapper;
+    private final ContactFormMapper contactFormMapper;
 
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
@@ -55,6 +57,6 @@ public class AuthorController {
     public ContactFormResponseDTO contact(@PathVariable @Positive Long id,
                                           @Valid @RequestBody ContactFormRequestDTO contactFormDTO) {
         ContactForm contactForm = authorService.createContactForm(id, contactFormDTO);
-        return authorMapper.mapContactFormToDTO(contactForm);
+        return contactFormMapper.mapContactFormToDTO(contactForm);
     }
 }

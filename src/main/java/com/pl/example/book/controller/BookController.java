@@ -3,7 +3,6 @@ package com.pl.example.book.controller;
 import com.pl.example.book.dto.BookDTO;
 import com.pl.example.book.mapper.BookMapper;
 import com.pl.example.book.service.BookService;
-import com.pl.example.order.service.BookOrderService;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,6 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
-    private final BookOrderService bookOrderService;
     private final BookMapper bookMapper;
 
     @GetMapping

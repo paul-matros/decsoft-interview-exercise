@@ -37,7 +37,7 @@ public class AuthorController {
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public AuthorDTO get(@PathVariable Long id) {
+    public AuthorDTO get(@PathVariable @Positive Long id) {
         return authorService.getAuthorById(id)
                 .map(authorMapper::mapAuthorToDTO)
                 .orElse(null);

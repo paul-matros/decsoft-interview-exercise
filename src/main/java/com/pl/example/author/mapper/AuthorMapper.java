@@ -13,20 +13,10 @@ import org.mapstruct.*;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface AuthorMapper {
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "firstName", source = "firstName")
-    @Mapping(target = "lastName", source = "lastName")
-    @Mapping(target = "bio", source = "bio")
-    @Mapping(target = "email", source = "email")
     AuthorDTO mapAuthorToDTO(Author author);
 
-    @Mapping(target = "message", source = "contactForm.message")
-    @Mapping(target = "subject", source = "contactForm.subject")
-    @Mapping(target = "author", source = "author")
     ContactForm mapContactFormDTO(ContactFormRequestDTO contactForm, Author author);
 
-    @Mapping(target = "message", source = "message")
-    @Mapping(target = "subject", source = "subject")
     @Mapping(target = "author", expression = "java(contactForm.getAuthor().getFirstName() + ' ' + contactForm.getAuthor().getLastName())")
     ContactFormResponseDTO mapContactFormToDTO(ContactForm contactForm);
 
@@ -36,3 +26,4 @@ public interface AuthorMapper {
     @Mapping(target = "email", source = "updateAuthorDTO.email", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateAuthor(@MappingTarget Author author, UpdateAuthorDTO updateAuthorDTO);
 }
+

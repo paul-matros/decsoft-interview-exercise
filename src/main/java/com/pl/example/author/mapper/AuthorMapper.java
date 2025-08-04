@@ -10,7 +10,8 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface AuthorMapper {
 
     AuthorDTO mapAuthorToDTO(Author author);
@@ -20,10 +21,5 @@ public interface AuthorMapper {
     @Mapping(target = "author", expression = "java(contactForm.getAuthor().getFirstName() + ' ' + contactForm.getAuthor().getLastName())")
     ContactFormResponseDTO mapContactFormToDTO(ContactForm contactForm);
 
-    @Mapping(target = "firstName", source = "updateAuthorDTO.firstName", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "lastName", source = "updateAuthorDTO.lastName", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "bio", source = "updateAuthorDTO.bio", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "email", source = "updateAuthorDTO.email", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateAuthor(@MappingTarget Author author, UpdateAuthorDTO updateAuthorDTO);
 }
-

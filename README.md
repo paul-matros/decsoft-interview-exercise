@@ -146,3 +146,10 @@ I'm sure I've missed something: **this exercise is art** - remarkable how many t
       behavior is necessary — Spring Boot’s default configuration may be sufficient in many cases.
     - The explicit Jackson dependencies (jackson-core, jackson-databind) may be redundant, as they are already included
       transitively via spring-boot-starter-web.
+      Environment Configuration:
+- **Environment Configuration:**
+    - Introduce separate configuration files (e.g. `application-dev.yml`, `application-test.yml`,
+      `application-prod.yml`) and leverage **Spring Profiles** to better isolate environment-specific settings such as:
+        - Database connection details
+        - Logging levels
+        - Feature toggles

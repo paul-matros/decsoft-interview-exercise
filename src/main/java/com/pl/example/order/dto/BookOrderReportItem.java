@@ -1,4 +1,6 @@
 package com.pl.example.order.dto;
 
-public record BookOrderReportItem(String isbn, String title, Long quantity) {
+public record BookOrderReportItem(String isbn,
+                                  String title,
+                                  Integer quantity) {
 }

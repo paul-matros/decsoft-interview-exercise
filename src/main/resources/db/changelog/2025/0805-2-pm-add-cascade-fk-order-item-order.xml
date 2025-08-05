@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="0805-2" author="pm">
+        <comment>Add cascade delete for fk order</comment>
+        <dropForeignKeyConstraint
+                baseTableName="order_item"
+                constraintName="fk_order_item_book_order"/>
+
+        <addForeignKeyConstraint
+                baseTableName="order_item"
+                baseColumnNames="order_id"
+                constraintName="fk_order_item_book_order"
+                referencedTableName="book_order"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+
+</databaseChangeLog>

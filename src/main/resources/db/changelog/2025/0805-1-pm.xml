@@ -5,8 +5,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="0805-1-pm" author="pm">
-        <comment>Add check constraints for positive values and ISBN format validation (no FK positive checks)</comment>
+    <changeSet id="0805-1" author="pm">
+        <comment>Add check constraints for positive values and ISBN format validation</comment>
 
         <sql>
             -- Add check constraint for positive quantity in order_item

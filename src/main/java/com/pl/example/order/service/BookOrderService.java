@@ -1,10 +1,12 @@
 package com.pl.example.order.service;
 
+import com.pl.example.book.exception.BookNotFoundException;
 import com.pl.example.book.model.Book;
 import com.pl.example.book.repository.BookRepository;
 import com.pl.example.order.dto.BookOrderReportItem;
 import com.pl.example.order.dto.CreateOrderDTO;
 import com.pl.example.order.dto.CreateOrderItemDTO;
+import com.pl.example.order.exception.CustomerNotFoundException;
 import com.pl.example.order.mapper.BookOrderItemMapper;
 import com.pl.example.order.mapper.BookOrderMapper;
 import com.pl.example.order.model.BookOrder;
@@ -37,14 +39,14 @@ public class BookOrderService {
 
     public BookOrder createOrder(CreateOrderDTO createOrderDTO) {
         Customer customer = customerRepository.findById(createOrderDTO.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("customer not found: " + createOrderDTO.getCustomerId()));//todo add custom exception
+                .orElseThrow(() -> new CustomerNotFoundException(createOrderDTO.getCustomerId(), "when creating an order"));
         BookOrder order = bookOrderMapper.toEntity(createOrderDTO, customer);
 
         // Create and link order items
         List<BookOrderItem> orderItems = new ArrayList<>();
         for (CreateOrderItemDTO itemDTO : createOrderDTO.getOrderItems()) {
             Book book = bookRepository.findByIsbn(itemDTO.getIsbn())
-                    .orElseThrow(() -> new RuntimeException("Book not found: " + itemDTO.getIsbn()));//todo add custom exception
+                    .orElseThrow(() -> new BookNotFoundException(itemDTO.getIsbn(), "when creating order item"));
 
             BookOrderItem item = bookOrderItemMapper.toEntity(itemDTO, book, order);
             orderItems.add(item);

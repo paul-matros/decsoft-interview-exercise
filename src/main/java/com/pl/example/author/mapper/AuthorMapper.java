@@ -11,7 +11,7 @@ import org.mapstruct.*;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface AuthorMapper {
 
-    AuthorDTO mapAuthorToDTO(Author author);
+    AuthorDTO toDto(Author author);
 
-    void updateAuthor(@MappingTarget Author author, UpdateAuthorDTO updateAuthorDTO);
+    void updateEntity(@MappingTarget Author author, UpdateAuthorDTO updateAuthorDTO);
 }

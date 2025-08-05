@@ -2,6 +2,7 @@ package com.pl.example.author.service;
 
 import com.pl.example.author.dto.ContactFormRequestDTO;
 import com.pl.example.author.dto.UpdateAuthorDTO;
+import com.pl.example.author.exception.AuthorNotFoundException;
 import com.pl.example.author.mapper.AuthorMapper;
 import com.pl.example.author.mapper.ContactFormMapper;
 import com.pl.example.author.model.Author;
@@ -31,17 +32,17 @@ public class AuthorService {
         return authorRepository.findById(id);
     }
 
-    public Optional<Author> updateAuthor(Long id, UpdateAuthorDTO updateAuthorDTO) {
+    public Author updateAuthor(Long id, UpdateAuthorDTO updateAuthorDTO) {
         return authorRepository.findById(id)
                 .map(author -> {
-                    authorMapper.updateAuthor(author, updateAuthorDTO);
+                    authorMapper.updateEntity(author, updateAuthorDTO);
                     return authorRepository.save(author);
-                });
+                }).orElseThrow(() -> new AuthorNotFoundException(id, "when trying to send contact form"));
     }
 
     public ContactForm createContactForm(Long authorId, ContactFormRequestDTO contactFormDTO) {
         Author author = authorRepository.findById(authorId)
-                .orElseThrow(() -> new RuntimeException("Author not found with id: " + authorId));//todo add custom exception?
+                .orElseThrow(() -> new AuthorNotFoundException(authorId, "when trying to send contact form"));
         ContactForm contactForm = contactFormMapper.toEntity(contactFormDTO, author);
         return contactFormRepository.save(contactForm);
     }

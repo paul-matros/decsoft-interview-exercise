@@ -6,6 +6,7 @@ import com.pl.example.author.dto.ContactFormResponseDTO;
 import com.pl.example.author.dto.UpdateAuthorDTO;
 import com.pl.example.author.mapper.AuthorMapper;
 import com.pl.example.author.mapper.ContactFormMapper;
+import com.pl.example.author.model.Author;
 import com.pl.example.author.model.ContactForm;
 import com.pl.example.author.service.AuthorService;
 import jakarta.validation.Valid;
@@ -31,7 +32,7 @@ public class AuthorController {
     @ResponseStatus(value = HttpStatus.OK)
     public List<AuthorDTO> getAll() {
         return authorService.getAllAuthors().stream()
-                .map(authorMapper::mapAuthorToDTO)
+                .map(authorMapper::toDto)
                 .toList();
     }
 
@@ -39,7 +40,7 @@ public class AuthorController {
     @ResponseStatus(value = HttpStatus.OK)
     public AuthorDTO get(@PathVariable @Positive Long id) {
         return authorService.getAuthorById(id)
-                .map(authorMapper::mapAuthorToDTO)
+                .map(authorMapper::toDto)
                 .orElse(null);
     }
 
@@ -47,9 +48,8 @@ public class AuthorController {
     @ResponseStatus(value = HttpStatus.OK)
     public AuthorDTO update(@PathVariable @Positive Long id,
                             @Valid @RequestBody UpdateAuthorDTO updateAuthorDTO) {
-        return authorService.updateAuthor(id, updateAuthorDTO)
-                .map(authorMapper::mapAuthorToDTO)
-                .orElse(null);
+        Author updatedAuthor = authorService.updateAuthor(id, updateAuthorDTO);
+        return authorMapper.toDto(updatedAuthor);
     }
 
     @PostMapping(path = "/{id}/contact")

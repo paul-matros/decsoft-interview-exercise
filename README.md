@@ -111,7 +111,7 @@ Some but not all of following points are more complex tasks on its own.
 
 I can implement these individually upon request.
 
-Im sure i've missed something: **this excercice is art** - remarkable how many things went purposefully wrong :)
+I'm sure I've missed something: **this exercise is art** - remarkable how many things went purposefully wrong :)
 
 - **Proper Security Implementation:**
     - Avoid passing `customerId` directly in `CreateOrderDto`; retrieve it from the security context instead.

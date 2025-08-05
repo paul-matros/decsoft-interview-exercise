@@ -4,6 +4,7 @@ import com.pl.example.author.dto.AuthorDTO;
 import com.pl.example.author.dto.ContactFormRequestDTO;
 import com.pl.example.author.dto.ContactFormResponseDTO;
 import com.pl.example.author.dto.UpdateAuthorDTO;
+import com.pl.example.author.exception.AuthorNotFoundException;
 import com.pl.example.author.mapper.AuthorMapper;
 import com.pl.example.author.mapper.ContactFormMapper;
 import com.pl.example.author.model.Author;
@@ -41,7 +42,7 @@ public class AuthorController {
     public AuthorDTO get(@PathVariable @Positive Long id) {
         return authorService.getAuthorById(id)
                 .map(authorMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new AuthorNotFoundException(id));
     }
 
     @PatchMapping(path = "/{id}")

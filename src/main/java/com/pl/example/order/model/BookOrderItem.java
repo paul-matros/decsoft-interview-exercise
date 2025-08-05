@@ -1,36 +1,33 @@
 package com.pl.example.order.model;
 
 import com.pl.example.book.model.Book;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.pl.example.shared.model.BaseEntity;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "order_item")
 @Getter
 @Setter
-public class BookOrderItem {
+@NoArgsConstructor
+public class BookOrderItem extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @NotNull(message = "Quantity is required")
+    @Min(value = 1, message = "Quantity must be positive")
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
 
-    @Column(name = "quantity")
-    private Long quantity;
-
+    @NotNull(message = "Book is required")
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_id", referencedColumnName = "id")
+    @JoinColumn(name = "book_id", referencedColumnName = "id", nullable = false)
     private Book book;
 
+    @NotNull(message = "Order is required")
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
     private BookOrder order;
 }

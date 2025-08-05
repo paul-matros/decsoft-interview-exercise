@@ -1,40 +1,45 @@
 package com.pl.example.book.model;
 
 import com.pl.example.author.model.Author;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import java.math.BigDecimal;
+import com.pl.example.shared.model.BaseEntity;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "book")
 @Getter
-public class Book {
+@Setter
+@NoArgsConstructor
+public class Book extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "title")
+    @NotBlank(message = "Title is required")
+    @Size(max = 256, message = "Title cannot exceed 256 characters")
+    @Column(name = "title", nullable = false, length = 256)
     private String title;
 
-    @Column(name = "isbn")
+    @NotBlank(message = "ISBN is required")
+    @Pattern(regexp = "^[0-9]{13}$", message = "ISBN must be exactly 13 digits")
+    @Column(name = "isbn", nullable = false, length = 13, unique = true)
     private String isbn;
 
     @Column(name = "published_date")
-    private String publishedDate;
+    private LocalDate publishedDate;
 
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
+    @NotNull(message = "Author is required")
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
+    @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
     private Author author;
 
-    @Column(name = "price")
+    @DecimalMin(value = "0.01", message = "Price must be positive")
+    @Column(name = "price", precision = 8, scale = 2)
     private BigDecimal price;
 }

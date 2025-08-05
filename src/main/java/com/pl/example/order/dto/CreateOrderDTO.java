@@ -17,7 +17,7 @@ public class CreateOrderDTO {
 
     @NotNull
     @Positive
-    private Long quantity;
+    private Integer quantity;
 
     @NotNull
     @Positive

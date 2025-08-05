@@ -1,32 +1,37 @@
 package com.pl.example.author.model;
 
+import com.pl.example.shared.model.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "author")
 @Getter
 @Setter
-public class Author {
+@NoArgsConstructor
+public class Author extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(name = "first_name")
+    @NotBlank(message = "First name is required")
+    @Size(max = 256, message = "First name cannot exceed 256 characters")
+    @Column(name = "first_name", nullable = false, length = 256)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Size(max = 256, message = "Last name cannot exceed 256 characters")
+    @Column(name = "last_name", length = 256)
     private String lastName;
 
-    @Column(name = "bio")
+    @Column(name = "bio", columnDefinition = "TEXT")
     private String bio;
 
-    @Column(name = "email")
+    @Email(message = "Email should be valid")
+    @Size(max = 256, message = "Email cannot exceed 256 characters")
+    @Column(name = "email", length = 256)
     private String email;
 }

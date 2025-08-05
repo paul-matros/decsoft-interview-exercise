@@ -116,7 +116,7 @@ Im sure i've missed something: **this excercice is art** - remarkable how many t
 - **Proper Security Implementation:**
     - Avoid passing `customerId` directly in `CreateOrderDto`; retrieve it from the security context instead.
     - Restrict access to sensitive endpoints to specific roles or user groups.
-- **Testing Improvements:**
+- **Testing:**
     - Use TestContainers for integration testing instead of H2, since H2 does not support Postgres views properly.
 - **Database Migration Strategy:**
     - Separate database structure changelogs from data population changelogs to avoid loading test/mock data in

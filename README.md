@@ -141,3 +141,8 @@ I'm sure I've missed something: **this exercise is art** - remarkable how many t
     - Unify API response formats, as in error responses.
     - Introduce API versioning.
 - **Add detailed JavaDocs and inline comments throughout the codebase**:
+- **Jackson Configuration and Dependencies:**
+    - The current JacksonConfiguration customizes field visibility and date formatting globally. Consider whether this
+      behavior is necessary — Spring Boot’s default configuration may be sufficient in many cases.
+    - The explicit Jackson dependencies (jackson-core, jackson-databind) may be redundant, as they are already included
+      transitively via spring-boot-starter-web.

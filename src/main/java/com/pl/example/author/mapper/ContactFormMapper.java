@@ -13,8 +13,8 @@ import org.mapstruct.*;
 public interface ContactFormMapper {
 
     @Mapping(target = "author", source = "author")
-    ContactForm mapContactFormDTO(ContactFormRequestDTO contactForm, Author author);
+    ContactForm toEntity(ContactFormRequestDTO contactForm, Author author);
 
     @Mapping(target = "author", expression = "java(contactForm.getAuthor().getFirstName() + ' ' + contactForm.getAuthor().getLastName())")
-    ContactFormResponseDTO mapContactFormToDTO(ContactForm contactForm);
+    ContactFormResponseDTO toDto(ContactForm contactForm);
 }

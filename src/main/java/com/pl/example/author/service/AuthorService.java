@@ -42,7 +42,7 @@ public class AuthorService {
     public ContactForm createContactForm(Long authorId, ContactFormRequestDTO contactFormDTO) {
         Author author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new RuntimeException("Author not found with id: " + authorId));//todo add custom exception?
-        ContactForm contactForm = contactFormMapper.mapContactFormDTO(contactFormDTO, author);
+        ContactForm contactForm = contactFormMapper.toEntity(contactFormDTO, author);
         return contactFormRepository.save(contactForm);
     }
 }

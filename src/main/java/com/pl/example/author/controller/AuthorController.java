@@ -57,6 +57,6 @@ public class AuthorController {
     public ContactFormResponseDTO contact(@PathVariable @Positive Long id,
                                           @Valid @RequestBody ContactFormRequestDTO contactFormDTO) {
         ContactForm contactForm = authorService.createContactForm(id, contactFormDTO);
-        return contactFormMapper.mapContactFormToDTO(contactForm);
+        return contactFormMapper.toDto(contactForm);
     }
 }

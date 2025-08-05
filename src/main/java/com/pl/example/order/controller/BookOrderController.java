@@ -37,6 +37,6 @@ public class BookOrderController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public BookOrderDTO createOrder(@Valid @NotNull @RequestBody CreateOrderDTO createOrderDTO) {
         BookOrder bookOrder = bookOrderService.createOrder(createOrderDTO);
-        return bookOrderMapper.mapOrderToDTO(bookOrder);
+        return bookOrderMapper.toDto(bookOrder);
     }
 }

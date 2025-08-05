@@ -38,7 +38,7 @@ public class BookOrderService {
         Book book = bookRepository.findByIsbn(createOrderDTO.getIsbn())
                 .orElseThrow(() -> new IllegalArgumentException("Book not found with ISBN: " + createOrderDTO.getIsbn()));//todo custom error?
 
-        BookOrder newOrder = bookOrderMapper.mapToOrder(createOrderDTO, customer, book);
+        BookOrder newOrder = bookOrderMapper.toEntity(createOrderDTO, customer, book);
 
         // Save and return DTO
         return bookOrderRepository.save(newOrder);

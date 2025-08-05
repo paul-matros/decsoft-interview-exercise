@@ -24,7 +24,7 @@ public class BookController {
     @ResponseStatus(value = HttpStatus.OK)
     public List<BookDTO> getAll() {
         return bookService.getAllBooks().stream()
-                .map(bookMapper::mapBookToDTO)
+                .map(bookMapper::toDto)
                 .toList();
     }
 
@@ -32,7 +32,7 @@ public class BookController {
     @ResponseStatus(value = HttpStatus.OK)
     public BookDTO get(@PathVariable @Positive Long id) {
         return bookService.getBook(id)
-                .map(bookMapper::mapBookToDTO)
+                .map(bookMapper::toDto)
                 .orElse(null);
     }
 }

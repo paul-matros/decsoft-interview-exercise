@@ -13,5 +13,5 @@ import org.mapstruct.ReportingPolicy;
 public interface BookMapper {
 
     @Mapping(target = "author", expression = "java(book.getAuthor().getFirstName() + ' ' + book.getAuthor().getLastName())")
-    BookDTO mapBookToDTO(Book book);
+    BookDTO toDto(Book book);
 }

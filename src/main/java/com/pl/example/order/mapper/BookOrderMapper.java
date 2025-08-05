@@ -2,7 +2,6 @@ package com.pl.example.order.mapper;
 
 import com.pl.example.book.model.Book;
 import com.pl.example.order.dto.BookOrderDTO;
-import com.pl.example.order.dto.BookOrderItemDTO;
 import com.pl.example.order.dto.CreateOrderDTO;
 import com.pl.example.order.model.BookOrder;
 import com.pl.example.order.model.BookOrderItem;
@@ -20,13 +19,10 @@ public interface BookOrderMapper {
     @Mapping(target = "customer", source = "customer")
     @Mapping(target = "orderDate", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "orderItems", ignore = true)
-    BookOrder mapToOrder(CreateOrderDTO createOrderDTO, Customer customer, Book book);
+    BookOrder toEntity(CreateOrderDTO createOrderDTO, Customer customer, Book book);
 
     @Mapping(target = "customerId", source = "customer.id")
-    BookOrderDTO mapOrderToDTO(BookOrder order);
-
-    @Mapping(target = "isbn", source = "book.isbn")
-    BookOrderItemDTO mapOrderItemToDTO(BookOrderItem orderItem);
+    BookOrderDTO toDto(BookOrder order);
 
     @AfterMapping
     default void linkOrderItems(@MappingTarget BookOrder order, CreateOrderDTO createOrderDTO, Book book) {

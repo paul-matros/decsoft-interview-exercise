@@ -12,6 +12,7 @@ import org.mapstruct.*;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ContactFormMapper {
 
+    @Mapping(target = "author", source = "author")
     ContactForm mapContactFormDTO(ContactFormRequestDTO contactForm, Author author);
 
     @Mapping(target = "author", expression = "java(contactForm.getAuthor().getFirstName() + ' ' + contactForm.getAuthor().getLastName())")

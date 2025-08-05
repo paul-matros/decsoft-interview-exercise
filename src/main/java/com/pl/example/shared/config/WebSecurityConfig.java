@@ -10,11 +10,9 @@ import org.springframework.security.config.annotation.web.configurers.LogoutConf
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.stereotype.Component;
 
 @EnableWebSecurity
 @Configuration
-@Component
 public class WebSecurityConfig {
 
     @Bean

@@ -2,5 +2,5 @@ package com.pl.example.order.dto;
 
 public record BookOrderReportItem(String isbn,
                                   String title,
-                                  Integer quantity) {
+                                  Long quantity) {
 }

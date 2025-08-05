@@ -109,7 +109,7 @@ cleaner and more maintainable code.
 
 Some but not all of following points are more complex tasks on its own.
 
-I can implement these individually upon request.
+### I can implement these individually upon request.
 
 I'm sure I've missed something: **this exercise is art** - remarkable how many things went purposefully wrong :)
 

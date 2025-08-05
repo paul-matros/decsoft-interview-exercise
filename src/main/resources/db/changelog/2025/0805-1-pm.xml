@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="0805-1-pm" author="pm">
+        <comment>Add check constraints for positive values and ISBN format validation (no FK positive checks)</comment>
+
+        <sql>
+            -- Add check constraint for positive quantity in order_item
+            ALTER TABLE order_item ADD CONSTRAINT ck_order_item_quantity_positive CHECK (quantity > 0);
+
+            -- Add check constraint for positive price in book
+            ALTER TABLE book ADD CONSTRAINT ck_book_price_positive CHECK (price > 0);
+
+            -- Add check constraint for ISBN format validation
+            ALTER TABLE book ADD CONSTRAINT ck_book_isbn_format CHECK (isbn ~ '^[0-9]{13}$');
+        </sql>
+
+        <rollback>
+            ALTER TABLE order_item DROP CONSTRAINT IF EXISTS ck_order_item_quantity_positive;
+            ALTER TABLE book DROP CONSTRAINT IF EXISTS ck_book_price_positive;
+            ALTER TABLE book DROP CONSTRAINT IF EXISTS ck_book_isbn_format;
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

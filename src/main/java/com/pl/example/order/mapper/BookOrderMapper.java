@@ -17,7 +17,6 @@ public interface BookOrderMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "customer", source = "customer")
-    @Mapping(target = "orderDate", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "orderItems", ignore = true)
     BookOrder toEntity(CreateOrderDTO createOrderDTO, Customer customer);
 

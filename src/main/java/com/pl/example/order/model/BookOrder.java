@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 public class BookOrder extends BaseEntity {
 
-    @NotNull(message = "Order date is required")
     @Column(name = "order_date", nullable = false, columnDefinition = "TIMESTAMP")
+    @CreationTimestamp
     private LocalDateTime orderDate;
 
     @NotNull(message = "Customer is required")
